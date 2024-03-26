@@ -16,15 +16,16 @@ import { LocalStrategy } from './auth/strategies/local-strategy';
 import { UsersService } from './users/users.service';
 import { UserSchema } from './users/users.schema';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './auth/strategies/jwt-strategy';
 
 @Module({
   controllers: [AppController, CharacterController, EpisodesController, AuthController],
-  providers: [AppService, CharacterService, EpisodesService, AuthService, LocalStrategy, UsersService],
+  providers: [AppService, CharacterService, EpisodesService, AuthService, LocalStrategy, JwtStrategy, UsersService],
   imports: [
     HttpModule,
     JwtModule.register({ 
       secret: 'secret',
-      signOptions: { expiresIn: '3600' },
+      signOptions: { expiresIn: '3600s' },
     }),
     MongooseModule.forRoot('mongodb://localhost:27017',{dbName: 'RickAndMorty'}),
     MongooseModule.forFeature([{ name: 'Character', schema: CharacterSchema }]),

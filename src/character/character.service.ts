@@ -29,7 +29,6 @@ export class CharacterService {
           await createdCharacter.save()
         }); 
     }
-    console.log("Request characters...")
     charactersDb = await this.characterModel.find()
     return charactersDb
   }
