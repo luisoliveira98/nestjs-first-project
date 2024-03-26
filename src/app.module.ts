@@ -9,15 +9,28 @@ import { CharacterSchema } from './character/character.schema';
 import { EpisodeSchema } from './episodes/episodes.schema';
 import { EpisodesController } from './episodes/episodes.controller';
 import { EpisodesService } from './episodes/episodes.service';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
+import { UsersModule } from './users/users.module';
+import { LocalStrategy } from './auth/strategies/local-strategy';
+import { UsersService } from './users/users.service';
+import { UserSchema } from './users/users.schema';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
+  controllers: [AppController, CharacterController, EpisodesController, AuthController],
+  providers: [AppService, CharacterService, EpisodesService, AuthService, LocalStrategy, UsersService],
   imports: [
     HttpModule,
+    JwtModule.register({ 
+      secret: 'secret',
+      signOptions: { expiresIn: '3600' },
+    }),
     MongooseModule.forRoot('mongodb://localhost:27017',{dbName: 'RickAndMorty'}),
     MongooseModule.forFeature([{ name: 'Character', schema: CharacterSchema }]),
     MongooseModule.forFeature([{ name: 'Episode', schema: EpisodeSchema }]),
+    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
+    UsersModule,
   ],
-  controllers: [AppController, CharacterController, EpisodesController],
-  providers: [AppService, CharacterService, EpisodesService],
 })
 export class AppModule {}
