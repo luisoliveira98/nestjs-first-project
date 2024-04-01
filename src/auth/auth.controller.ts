@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { CreateUser } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Authorization')
 @Controller('auth')
@@ -31,6 +31,11 @@ export class AuthController {
     }
 
     @Get("users")
+    @ApiResponse({
+        status: 200,
+        type: CreateUser,
+        isArray: true
+    })
     public async getAllUsers() {
         Logger.log("Get all Users...")
         return this.userService.getAllUsers();

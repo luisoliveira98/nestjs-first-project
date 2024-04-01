@@ -2,7 +2,8 @@ import { Controller, Delete, Get, Logger, UseGuards } from '@nestjs/common';
 import { CharacterService } from './character.service';
 import { Character } from './character.schema';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateCharacterDto } from './dto/create-character.dto';
 
 @ApiTags('Characters')
 @Controller('character')
@@ -14,6 +15,11 @@ export class CharacterController {
 
   @UseGuards(JwtGuard)
   @Get()
+  @ApiResponse({
+    status: 200,
+    type: CreateCharacterDto,
+    isArray: true
+})
   public async getCharacters(): Promise<Character[]> {
     Logger.log("Request characters...")
     const characters = await this.characterService.getCharacters()
