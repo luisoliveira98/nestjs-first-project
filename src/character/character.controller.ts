@@ -1,8 +1,10 @@
-import { Controller, Get, Logger, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Logger, UseGuards } from '@nestjs/common';
 import { CharacterService } from './character.service';
 import { Character } from './character.schema';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Characters')
 @Controller('character')
 export class CharacterController {
 
@@ -20,7 +22,7 @@ export class CharacterController {
 
 
   @UseGuards(JwtGuard)
-  @Get("/delete/")
+  @Delete("/delete/")
   public async deleteCharacters(): Promise<void> {
     Logger.log(`Delete all characters...`)
     this.characterService.cleanCharacters()

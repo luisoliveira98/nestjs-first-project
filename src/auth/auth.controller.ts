@@ -1,9 +1,11 @@
-import { Body, Controller, Get, Logger, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { CreateUser } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Authorization')
 @Controller('auth')
 export class AuthController {
 
@@ -20,6 +22,9 @@ export class AuthController {
     }
 
     @Post('register')
+    @ApiBody({
+        type: CreateUser
+    })
     public async registerUser(@Body() createUserDto: CreateUser) {
         Logger.log("Register User...")
         return await this.userService.create(createUserDto.username, createUserDto.password)
@@ -31,7 +36,7 @@ export class AuthController {
         return this.userService.getAllUsers();
     }
 
-    @Get("deleteUsers")
+    @Delete("deleteUsers")
     public async removeAllUsers() {
         Logger.log("Delete all users...")
         return this.userService.removeUsers()

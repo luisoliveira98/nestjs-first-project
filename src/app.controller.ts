@@ -9,8 +9,4 @@ export class AppController {
     private readonly httpService: HttpService  
   ) {}
 
-  @Get()
-  async getHello(): Promise<string> {
-    return this.appService.getHello();
-  }
 }
